@@ -1,0 +1,8 @@
+Dashboard
+Image Search
+Image Generate
+Resume Search
+Resume summary
+Card Extractor
+Image To Sketch
+

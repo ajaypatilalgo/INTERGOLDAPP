@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search & Generate</title>
+    <link rel="stylesheet" href="../static/style/styles.css"> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../static/style/style_ind.css"> <!-- Main content CSS -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <script src="../static/js/jquery-3.3.1.js"></script>
+    <style>
+        .chat-search-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            background-color: #f4f4f4;
+            /* Light background */
+            border-radius: 26px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 90px;
+            /* Add a value for margin-bottom */
+        }
+
+        .chat-search-bar {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 40px;
+            padding: 0 12px;
+            border: none;
+            border-radius: 20px;
+            background-color: #ffffff;
+            /* White input background */
+            color: #333;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: #999;
+            /* Placeholder color */
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+            /* Focus outline */
+        }
+
+        .upload-button,
+        .send-button {
+            width: 40px;
+            height: 40px;
+            margin-left: 8px;
+            background-color: #ffffff;
+            /* White button background */
+            border: none;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-button:hover,
+        .send-button:hover {
+            background-color: #e9ecef;
+            /* Light gray on hover */
+        }
+
+        .upload-button:disabled,
+        .send-button:disabled {
+            background-color: #d7d7d7;
+            /* Disabled button color */
+            cursor: not-allowed;
+        }
+
+        .image-results {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* Four columns in a row */
+            gap: 15px;
+            /* Space between grid items */
+            margin-top: 20px;
+            /* Space above the grid */
+        }
+
+        .image-item {
+            display: flex;
+            /* Use flexbox for alignment */
+            flex-direction: column;
+            /* Stack children vertically */
+            justify-content: space-between;
+            /* Space out children */
+            align-items: center;
+            /* Center items horizontally */
+            position: relative;
+            text-align: center;
+            /* Center text below images */
+            overflow: hidden;
+            /* Prevent overflow */
+            border-radius: 8px;
+            /* Rounded corners for image items */
+            background-color: #f9f9f9;
+            /* Light background for image items */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+            transition: transform 0.3s;
+            /* Animation for hover effect */
+            padding: 10px;
+            /* Add padding to ensure spacing */
+        }
+
+        .image-item:hover {
+            transform: scale(1.05);
+            /* Slightly scale up on hover */
+        }
+
+        .image-item img {
+            width: 100%;
+            /* Image fills the div */
+            height: auto;
+            /* Maintain aspect ratio */
+            max-height: 150px;
+            /* Set a maximum height for images */
+            border-radius: 8px;
+            /* Match item corners */
+            object-fit: cover;
+            /* Ensure the image covers the div without distortion */
+        }
+
+        .download-button {
+            display: inline-block;
+            /* Make button inline with text */
+            margin-top: 5px;
+            /* Space above the button */
+            padding: 5px 10px;
+            /* Button padding */
+            color: #fff;
+            /* Text color */
+            background-color: #007bff;
+            /* Button color */
+            border: none;
+            /* Remove border */
+            border-radius: 5px;
+            /* Rounded button corners */
+            text-decoration: none;
+            /* Remove underline */
+            font-size: 14px;
+            /* Font size */
+            transition: background-color 0.3s;
+            /* Smooth color change */
+        }
+
+        .download-button:hover {
+            background-color: #0056b3;
+            /* Darker shade on hover */
+        }
+
+        /* Media Queries for further responsiveness */
+        @media (max-width: 1024px) {
+            .image-results {
+                grid-template-columns: repeat(3, 1fr);
+                /* Three columns on medium screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .image-results {
+                grid-template-columns: repeat(2, 1fr);
+                /* Two columns on smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .image-results {
+                grid-template-columns: 1fr;
+                /* Single column on very small screens */
+            }
+        }
+
+       
+    </style>
+</head>
+
+<body>
+
+
+    <div class="navigation">
+        <ul>
+            <li class="header-title">
+                ALGORISYS TECHNOLOGIES
+            </li>
+            {% if 'Dashboard' in features %}
+            <li>
+                <a href="/">
+                    <span class="icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Search' in features %}
+            <li>
+                <a href="/search">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="title">Image Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Generate' in features %}
+            <li>
+                <a href="/generate">
+                    <span class="icon"><i class="fa-solid fa-image"></i></span>
+                    <span class="title">Image Generate</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume Search' in features %}
+            <li>
+                <a href="/Research">
+                    <span class="icon"><i class="fas fa-file-alt"></i></span>
+                    <span class="title">Resume Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume summary' in features %}
+            <li>
+                <a href="/resume">
+                    <span class="icon"><i class="fa-solid fa-file-alt"></i></span>
+                    <span class="title">Resume summary</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Train Similar Image' in features %}
+            <li>
+                <a href="/train_similar">
+                    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+                    <span class="title">Train Similar Model</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Card Extractor' in features %}
+            <li>
+                <a href="/card">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Card Extractor</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Image To Sketch' in features %}
+            <li>
+                <a href="/sketch">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Image To Sketch</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+
+
+    <!-- Main content area -->
+    <div class="main-content">
+        {% if message %}
+        <h1 class="welcome-heading">Hello, Welcome!</h1>
+        <p class="description">What would you like to do today?</p>
+        <h1 class="welcome-heading">{{ message }}</h1>
+        {% else %}
+
+        <div class="navigation-cards">
+            <div class="nav-card" onclick="window.location.href='/search'">
+                <h2>Search Similar Images</h2>
+                <p>Find images that match your query.</p>
+            </div>
+            <div class="nav-card" onclick="window.location.href='/generate'">
+                <h2>Generate Images</h2>
+                <p>Create images using various models and prompts.</p>
+            </div>
+            <div class="nav-card" onclick="window.location.href='/resume'">
+                <h2>Generate Resume Summary</h2>
+                <p>Create a summary for your resume.</p>
+            </div>
+            <div class="nav-card" onclick="window.location.href='/Research'">
+                <h2>Resume Search Engine</h2>
+                <p>Ask Questions on a Resume.</p>
+            </div>
+        </div>
+
+        <!-- <div class="chat-search-container">
+            <div class="chat-search-bar">
+                <input type="text" id="search-input" class="search-input" placeholder="Search folder here..." />
+                <button class="upload-button" aria-label="Attach files">
+                   
+                    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M9 7C9 4.23858 11.2386 2 14 2C16.7614 2 19 4.23858 19 7V15C19 18.866 15.866 22 12 22C8.13401 22 5 18.866 5 15V9C5 8.44772 5.44772 8 6 8C6.55228 8 7 8.44772 7 9V15C7 17.7614 9.23858 20 12 20C14.7614 20 17 17.7614 17 15V7C17 5.34315 15.6569 4 14 4C12.3431 4 11 5.34315 11 7V15C11 15.5523 11.4477 16 12 16C12.5523 16 13 15.5523 13 15V9C13 8.44772 13.4477 8 14 8C14.5523 8 15 8.44772 15 9V15C15 16.6569 13.6569 18 12 18C10.3431 18 9 16.6569 9 15V7Z"
+                            fill="currentColor"></path>
+                    </svg>
+                </button>
+                <button class="send-button" aria-label="Send" id="search-button">
+                    
+                    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M15.1918 8.90615C15.6381 8.45983 16.3618 8.45983 16.8081 8.90615L21.9509 14.049C22.3972 14.4953 22.3972 15.2189 21.9509 15.6652C21.5046 16.1116 20.781 16.1116 20.3347 15.6652L17.1428 12.4734V22.2857C17.1428 22.9169 16.6311 23.4286 15.9999 23.4286C15.3688 23.4286 14.8571 22.9169 14.8571 22.2857V12.4734L11.6652 15.6652C11.2189 16.1116 10.4953 16.1116 10.049 15.6652C9.60265 15.2189 9.60265 14.4953 10.049 14.049L15.1918 8.90615Z"
+                            fill="currentColor"></path>
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="image-results" id="results"></div>
+
+        <script>
+            $(document).ready(function () {
+                $('#search-button').on('click', function () {
+                    const query = $('#search-input').val(); 
+                    $.post('/amsearch', { query: query }, function (data) {
+                        $('#results').empty(); 
+                        if (data.length > 0) {
+                            data.forEach(function (image) {
+                              
+                                $('#results').append(
+                                    `<div class="image-item">
+                                        <img src="${image}" alt="Image" />
+                                        <a href="${image}" class="download-button" download>Download</a>
+                                    </div>`
+                                );
+                            });
+                        } else {
+                            $('#results').append('<div>No images found.</div>');
+                        }
+                    });
+                });
+            });
+        </script> -->
+
+        {% endif %}
+
+    </div>
+</body>
+
+</html>

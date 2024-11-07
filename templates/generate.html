@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search & Generate</title>
+    <link rel="stylesheet" href="../static/style/styles.css"> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../static/style/style_gen.css"> <!-- Main content CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    
+</head>
+<body>
+   
+ 
+
+    <div class="navigation">
+        <ul>
+            <li class="header-title">
+                ALGORISYS TECHNOLOGIES
+            </li>
+            {% if 'Dashboard' in features %}
+            <li>
+                <a href="/">
+                    <span class="icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Search' in features %}
+            <li>
+                <a href="/search">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="title">Image Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Generate' in features %}
+            <li>
+                <a href="/generate">
+                    <span class="icon"><i class="fa-solid fa-image"></i></span>
+                    <span class="title">Image Generate</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume Search' in features %}
+            <li>
+                <a href="/Research">
+                    <span class="icon"><i class="fas fa-file-alt"></i></span>
+                    <span class="title">Resume Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume summary' in features %}
+            <li>
+                <a href="/resume">
+                    <span class="icon"><i class="fa-solid fa-file-alt"></i></span>
+                    <span class="title">Resume summary</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Train Similar Image' in features %}
+            <li>
+                <a href="/train_similar">
+                    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+                    <span class="title">Train Similar Model</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Card Extractor' in features %}
+            <li>
+                <a href="/card">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Card Extractor</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Image To Sketch' in features %}
+            <li>
+                <a href="/sketch">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Image To Sketch</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+   
+    <!-- Main content area -->
+    <div class="main-container">
+        <div class="form-section">
+            <h2 style="color:black">Generate or Transform Image</h2>
+            {% if message %}
+            <h1 class="welcome-heading">{{ message }}</h1>
+            {% else %}
+            <form action="/generate" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="model">Stable Diffusion Checkpoints</label>
+                    <select name="model" id="model" class="form-control">
+                        {% for model in model_names %}
+                        <option value="{{ model }}" {% if model == "absolutereality_v181.safetensors [3d9d4d2b]" %} selected {% endif %}>{{ model }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="prompt">Prompt</label>
+                    <input type="text" name="prompt" id="prompt" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="negative-prompt">Negative Prompt</label>
+                    <input type="text" name="negative-prompt" id="negative-prompt" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="input-image">Input Image (Optional for Transformation)</label>
+                    <input type="file" class="form-control" name="input-image" accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label for="number-of-images">Number of Images</label>
+                    <select name="number-of-images" id="number-of-images" class="form-control">
+                        {% for i in range(1, 11) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="sampling-method">Sampling Method</label>
+                    <select name="sampling-method" id="sampling-method" class="form-control">
+                        {% for method in sampling_method %}
+                        <option value="{{ method }}">{{ method }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="steps">Sampling Steps</label>
+                    <input type="number" name="steps" value="20" min="1" max="30" id="steps" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="width">Width</label>
+                    <input type="number" name="width" value="512" min="512" max="1024" id="width" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="height">Height</label>
+                    <input type="number" name="height" value="512" min="512" max="1024" id="height" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="cfg-scale">CFG Scale</label>
+                    <input type="number" name="cfg-scale" value="7" min="1" max="20" id="cfg-scale" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="denoising-strength">Denoising Strength</label>
+                    <input type="number" name="denoising-strength" value="0.6" step="0.01" id="denoising-strength" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="seed">Seed</label>
+                    <input type="number" name="seed" value="42" id="seed" class="form-control">
+                </div>
+
+                <button type="submit" class="btn mt-3">Generate/Transform</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+/* General container styling */
+.form-section, .table-responsive {
+    margin: 0 auto; /* Centers the content */
+    padding: 20px; /* Adds padding inside the container */
+    max-width: 800px; /* Restricts the max width for readability */
+    width: 100%; /* Ensures the container takes full width */
+    background-color: #f8f9fa; /* Light background color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-bottom: 20px; /* Space between the form and the table */
+}
+
+/* Heading */
+.form-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333; /* Darker heading text color */
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 15px; /* Space between form fields */
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block; /* Labels take full width */
+    color: #333; /* Label text color */
+}
+
+.form-control {
+    width: 100%; /* Full width input */
+    padding: 10px; /* Padding inside the input */
+    border: 1px solid #ced4da; /* Light border color */
+    border-radius: 4px; /* Rounded input fields */
+    font-size: 16px;
+    box-sizing: border-box; /* Ensures padding is included in the width */
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff; /* White text */
+    background-color: #007bff; /* Bootstrap primary blue */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Table styling */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse; /* Collapses borders for a cleaner look */
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border: 1px solid #dee2e6;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+.table td {
+    background-color: #ffffff;
+}
+
+/* Table responsive styling */
+.table-responsive {
+    overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+    .form-section, .table-responsive {
+        padding: 15px; /* Adjust padding for smaller screens */
+    }
+
+    .btn {
+        width: 100%; /* Full-width button on small screens */
+    }
+}

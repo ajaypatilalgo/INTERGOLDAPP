@@ -1,0 +1,146 @@
+/* General CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Main container styling */
+.main-container {
+    display: flex;
+    flex-direction: column; /* Stack sections vertically */
+    margin-left: 250px; /* Offset for the fixed sidebar */
+    padding: 20px; /* Padding for the main content */
+    width: calc(100% - 250px); /* Full width considering sidebar */
+    background-color: #f8f9fa; /* Light background */
+    min-height: 100vh; /* Full height */
+}
+
+/* Styling for h1 heading */
+.heading {
+    font-size: 28px; /* Font size */
+    color: #343a40; /* Dark color */
+    font-weight: 600; /* Bold font */
+    text-align: center; /* Center the text */
+    margin-bottom: 15px; /* Space below the heading */
+    padding-bottom: 10px; /* Padding below the heading */
+    border-bottom: 2px solid #007bff; /* Add a bottom border */
+    width: 100%; /* Full-width heading */
+}
+
+/* Image grid styling */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive columns */
+    gap: 20px; /* Gap between items */
+    padding: 10px; /* Padding around the grid */
+    width: 100%;
+    margin: 0 auto; /* Center the grid */
+}
+
+/* Image container styling */
+.image-container {
+    position: relative; /* Position relative for download icon */
+    overflow: hidden; /* Clip content */
+    background-color: #ffffff; /* Background color */
+    padding: 10px; /* Padding around image */
+    border: 2px solid #dee2e6; /* Border color */
+    border-radius: 10px; /* Rounded corners for the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    text-align: center; /* Center text and image */
+    transition: transform 0.2s ease; /* Smooth scaling */
+}
+
+.image-container:hover {
+    transform: scale(1.05); /* Scale up on hover */
+}
+
+/* Image styling */
+.image-container img {
+    width: 100%; /* Full width */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Rounded corners for image */
+}
+
+/* Download icon container styling */
+.download-icon-container {
+    position: absolute; /* Absolute position for icon */
+    top: 10px; /* 10px from the top */
+    left: 10px; /* 10px from the left */
+}
+
+/* Download icon styling */
+.download-icon {
+    width: 24px; /* Icon size */
+    height: 24px; /* Icon size */
+    cursor: pointer; /* Pointer cursor */
+    border: none; /* Remove any border from the icon */
+    background: none; /* No background */
+}
+
+/* Button container styling */
+.nav-button-container {
+    display: flex;
+    justify-content: center; /* Center the button */
+    margin-top: 20px; /* Space above the button */
+}
+
+/* Navigation button styling */
+.nav-button {
+    display: inline-block;
+    padding: 12px 24px; /* Button padding */
+    background-color: #007bff; /* Button background */
+    color: #fff; /* Button text color */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+    font-weight: bold; /* Bold text */
+    transition: background-color 0.3s ease; /* Transition on hover */
+}
+
+.nav-button:hover {
+    background-color: #0056b3; /* Darker on hover */
+}
+
+/* Download icon container styling */
+.download-icon-container {
+    position: absolute; /* Absolute position for icon */
+    top: 10px; /* 10px from the top */
+    left: 10px; /* 10px from the left */
+    background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
+    border-radius: 50%; /* Circular background */
+    padding: 5px; /* Space around the icon */
+}
+
+/* Download icon styling */
+.download-icon {
+    width: 24px; /* Icon size */
+    height: 24px; /* Icon size */
+    cursor: pointer; /* Pointer cursor */
+    border: none; /* Remove any border from the icon */
+    background: none; /* No background on the icon itself */
+    display: block; /* Block display to center in container */
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-container {
+        width: 100%; /* Full-width main container */
+        margin-left: 0; /* Remove sidebar offset */
+        padding: 10px; /* Reduced padding */
+    }
+
+    .image-grid {
+        grid-template-columns: 1fr; /* Single column on small screens */
+    }
+
+    .nav-button-container {
+        margin-top: 15px; /* Adjust space above the button */
+    }
+
+    .image-container {
+        padding: 10px; /* Reduced padding inside image container */
+    }
+}

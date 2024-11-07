@@ -1,0 +1,98 @@
+/* General CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Main content container styling */
+.main-container {
+    display: flex;
+    height: 100vh; /*Full-height for the container */ 
+    width: calc(100% - 250px); /* Full width minus sidebar width */
+    margin-left: 250px; /* Offset for the fixed sidebar */
+    padding: 20px; /* Padding for the main content */
+    background-color: #f8f9fa; /* Light background */
+}
+
+/* Form section styling */
+.form-section {
+    background-color: #ffffff; /* Form background */
+    padding: 30px; /* Padding inside the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    width: 100%; /* Full width for the form section */
+    max-width: 800px; /* Maximum width for the form section */
+    height: auto; /* Auto height based on content */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    overflow-y: auto; /* Enable scrolling if content overflows */
+    margin: auto; /* Center the form section */
+}
+
+/* Form styling */
+h2 {
+    margin-bottom: 20px; /* Space below the heading */
+    font-size: 24px; /* Font size for heading */
+    color: #343a40; /* Dark color for heading */
+    text-align: center; /* Center the heading */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Space below each form group */
+    flex-shrink: 0; /* Prevent form groups from shrinking */
+}
+
+.form-group label {
+    display: block; /* Block-level element */
+    margin-bottom: 5px; /* Space below the label */
+    font-weight: bold; /* Bold labels */
+}
+
+.form-control {
+    width: 100%; /* Full width for inputs */
+    padding: 10px; /* Padding inside inputs */
+    border: 1px solid #ced4da; /* Border for inputs */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for inputs */
+}
+
+.form-control:focus {
+    outline: none; /* Remove default outline */
+    border-color: #80bdff; /* Border color on focus */
+    box-shadow: 0 0 5px rgba(128, 189, 255, 0.5); /* Shadow on focus */
+}
+
+/* Button styling */
+.btn {
+    display: inline-block; /* Inline block for buttons */
+    padding: 10px 20px; /* Padding inside button */
+    background-color: #007bff; /* Button background */
+    color: #fff; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Transition for hover effect */
+    text-align: center; /* Center the text */
+    width: 100%; /* Full-width button */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Change background on hover */
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-container {
+        width: 100%; /* Full-width main container */
+        margin-left: 0; /* Remove sidebar offset */
+        padding: 10px; /* Reduced padding for smaller screens */
+    }
+
+    .form-section {
+        padding: 20px; /* Reduced padding for form section */
+    }
+}

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search & Generate</title>
+    <title>Image Search & Generate</title>
+    <link rel="stylesheet" href="../static/style/styles.css"> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../static/style/style_ser.css"> <!-- Main content CSS -->
+    <link rel="stylesheet" href="../static/style/boostrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <style>
+        /* Centering container and making it responsive */
+        .image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            max-width: 100%;
+            padding: 10px;
+            height: auto;
+        }
+
+        .image-container img {
+            max-width: 50%;
+            /* Makes image responsive within container */
+            height: auto;
+            /* Maintains image aspect ratio */
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            margin-bottom: 10pc;
+            /* Includes padding within width/height */
+        }
+
+
+
+        .image-container1 {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers content horizontally */
+            max-width: 100%;
+            margin: 0 auto; /* Centers the container itself */
+            padding: 10px;
+            text-align: center;
+        }
+    
+       /* Styling the image with fixed size */
+        .image-container1 img {
+            width: 600px; /* Fixed width */
+            height: 600px; /* Fixed height */
+            object-fit: cover; /* Ensures the image covers the entire area */
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+    
+        /* Download icon styling */
+        .download-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #333;
+            text-decoration: none;
+            font-size: 18px;
+        }
+    
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .download-icon {
+                font-size: 16px;
+                top: 5px;
+                right: 5px;
+                padding: 4px;
+            }
+    
+            .image-container1 {
+                padding: 5px;
+            }
+        }
+    
+        @media (max-width: 480px) {
+            .download-icon {
+                font-size: 14px;
+                padding: 3px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navigation">
+        <ul>
+            <li class="header-title">
+                ALGORISYS TECHNOLOGIES
+            </li>
+            {% if 'Dashboard' in features %}
+            <li>
+                <a href="/">
+                    <span class="icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Search' in features %}
+            <li>
+                <a href="/search">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="title">Image Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Generate' in features %}
+            <li>
+                <a href="/generate">
+                    <span class="icon"><i class="fa-solid fa-image"></i></span>
+                    <span class="title">Image Generate</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume Search' in features %}
+            <li>
+                <a href="/Research">
+                    <span class="icon"><i class="fas fa-file-alt"></i></span>
+                    <span class="title">Resume Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume summary' in features %}
+            <li>
+                <a href="/resume">
+                    <span class="icon"><i class="fa-solid fa-file-alt"></i></span>
+                    <span class="title">Resume summary</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Train Similar Image' in features %}
+            <li>
+                <a href="/train_similar">
+                    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+                    <span class="title">Train Similar Model</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Card Extractor' in features %}
+            <li>
+                <a href="/card">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Card Extractor</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Image To Sketch' in features %}
+            <li>
+                <a href="/sketch">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Image To Sketch</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="main-container">
+        <h1>IMAGE TO SKETCH</h1>
+
+        <!-- Form Section for Image Upload -->
+    <div class="form-section">
+        <form method="POST" enctype="multipart/form-data" action="/sketch">
+            <label class="file-label">
+                <input type="file" name="image" class="file-input" accept="image/*" onchange="showOriginalImagePreview(this)" required>
+                <span class="file-label-text">Choose an image...</span>
+            </label>
+            <div class="button-container">
+                <input type="submit" value="Convert to Sketch" class="search-button">
+            </div>
+        </form>
+    </div>
+    
+    <!-- Original Image Preview Section -->
+    <div id="original-image-section" style="display: none;">
+        <h2  class="mt-5">Original Image</h2>
+        <div class="image-container">
+            <img id="original-image-preview" src="" >
+        </div>
+    </div>
+
+    <!-- Sketch Image Section (conditionally displayed after form submission) -->
+    {% if sketch_image_data %}
+    <div id="sketch-image-section">
+        <h2 class="mt-5">Sketch Image</h2>
+        <div class="image-container1">
+            <a href="data:image/png;base64,{{ sketch_image_data }}" download="sketch_image.png" class="download-icon">
+                <i class="fas fa-download"></i>
+            </a>
+            <img src="data:image/png;base64,{{ sketch_image_data }}" alt="Sketch Image">
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        // Show the image preview immediately after selecting a file
+        function showOriginalImagePreview(input) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function (e) {
+                const originalImagePreview = document.getElementById('original-image-preview');
+                originalImagePreview.src = e.target.result;
+                document.getElementById('original-image-section').style.display = 'block'; // Show the original image section
+            };
+            
+            // Read the selected file as a Data URL
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    
+        // After the page loads, check if there’s already an image in the preview section.
+        // If there is, show the section (useful after form submission).
+        document.addEventListener('DOMContentLoaded', function() {
+            const originalImageSection = document.getElementById('original-image-section');
+            const originalImagePreview = document.getElementById('original-image-preview');
+    
+            // Only show the section if there's already an image source set
+            if (originalImagePreview.src && originalImagePreview.src !== window.location.href) {
+                originalImageSection.style.display = 'block';
+            }
+        });
+    </script>
+    
+
+</body>
+
+</html>

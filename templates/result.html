@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search & Generate</title>
+    <link rel="stylesheet" href="../static/style/styles.css"> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../static/style/style_res.css"> <!-- Main content CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    
+</head>
+<body>
+    
+
+    <div class="navigation">
+        <ul>
+            <li class="header-title">
+                ALGORISYS TECHNOLOGIES
+            </li>
+            {% if 'Dashboard' in features %}
+            <li>
+                <a href="/">
+                    <span class="icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Search' in features %}
+            <li>
+                <a href="/search">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="title">Image Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Generate' in features %}
+            <li>
+                <a href="/generate">
+                    <span class="icon"><i class="fa-solid fa-image"></i></span>
+                    <span class="title">Image Generate</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume Search' in features %}
+            <li>
+                <a href="/Research">
+                    <span class="icon"><i class="fas fa-file-alt"></i></span>
+                    <span class="title">Resume Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume summary' in features %}
+            <li>
+                <a href="/resume">
+                    <span class="icon"><i class="fa-solid fa-file-alt"></i></span>
+                    <span class="title">Resume summary</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Train Similar Image' in features %}
+            <li>
+                <a href="/train_similar">
+                    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+                    <span class="title">Train Similar Model</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Card Extractor' in features %}
+            <li>
+                <a href="/card">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Card Extractor</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Image To Sketch' in features %}
+            <li>
+                <a href="/sketch">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Image To Sketch</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+ 
+
+    <!-- Main content area -->
+    <div class="main-container">
+        <div class="column">
+            <h1 class="heading" style="color:black">Generated Using Prodia</h1>
+            <div class="image-grid">
+                {% for generated_image_path in generated_images %}
+                <div class="image-container">
+                    <div class="download-icon-container">
+                        <a href="{{ generated_image_path }}" class="download-link" download>
+                            <img src="../static/icons/download.svg" alt="Download" class="download-icon">
+                        </a>
+                    </div>
+                    <img src="{{ generated_image_path }}" alt="Generated Image">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="column">
+            <h1 class="heading">Generated Using OpenAI</h1>
+            <div class="image-grid">
+                {% for generated_image_path in image_urls %}
+                <div class="image-container">
+                    <div class="download-icon-container">
+                        <a href="{{ generated_image_path }}" class="download-link" download>
+                            <img src="../static/icons/download.svg" alt="Download" class="download-icon">
+                        </a>
+                    </div>
+                    <img src="{{ generated_image_path }}" alt="Generated Image">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="nav-button-container">
+            <a href="/generate" class="nav-button">Generate Another Image</a>
+        </div>
+    </div>
+    <script src="../static/js/script.js"></script>
+</body>
+</html>

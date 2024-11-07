@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search & Generate</title>
+    <link rel="stylesheet" href="../static/style/styles.css"> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../static/style/style_ser.css"> <!-- Main content CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+   
+</head>
+
+<body>
+  
+
+    <div class="navigation">
+        <ul>
+            <li class="header-title">
+                ALGORISYS TECHNOLOGIES
+            </li>
+            {% if 'Dashboard' in features %}
+            <li>
+                <a href="/">
+                    <span class="icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Search' in features %}
+            <li>
+                <a href="/search">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="title">Image Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Generate' in features %}
+            <li>
+                <a href="/generate">
+                    <span class="icon"><i class="fa-solid fa-image"></i></span>
+                    <span class="title">Image Generate</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume Search' in features %}
+            <li>
+                <a href="/Research">
+                    <span class="icon"><i class="fas fa-file-alt"></i></span>
+                    <span class="title">Resume Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume summary' in features %}
+            <li>
+                <a href="/resume">
+                    <span class="icon"><i class="fa-solid fa-file-alt"></i></span>
+                    <span class="title">Resume summary</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Train Similar Image' in features %}
+            <li>
+                <a href="/train_similar">
+                    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+                    <span class="title">Train Similar Model</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Card Extractor' in features %}
+            <li>
+                <a href="/card">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Card Extractor</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Image To Sketch' in features %}
+            <li>
+                <a href="/sketch">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Image To Sketch</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    <!-- Main content area -->
+    <div class="main-container">
+        <h1 style="color:black">RESUME SUMERIZATION</h1>
+        {% if message2 %}
+        <h1 class="welcome-heading">{{ message2 }}</h1>
+        {% else %}
+        <div class="form-section">
+            <form method="POST" enctype="multipart/form-data" class="form" action="/resume">
+                <label class="file-label">
+                    <input type="file" name="query_pdf" class="file-input" accept="application/pdf"
+                        onchange="updateFileName(this)" required>
+                    <span class="file-label-text">Choose a PDF file...</span>
+                </label>
+                <input type="submit" value="Upload" class="btn">
+            </form>
+            <br>
+            <br>
+            <div id="dictionaryValues" class="border border-black p-8 rounded-md shadow-md"></div>
+
+            {% if data %}
+            <script>
+                function displayDictionaryValues(data) {
+                    var dictionaryValuesDiv = document.getElementById("dictionaryValues");
+                    var html = generateTableHTML(data);
+                    dictionaryValuesDiv.innerHTML = html;
+                }
+
+                function generateTableHTML(data) {
+                    var html = "<table class='min-w-full border-collapse border border-gray-300'>";
+                    html += "<thead><tr><th class='border border-gray-300 p-2'>Key</th><th class='border border-gray-300 p-2'>Value</th></tr></thead><tbody>";
+                    html += generateTableRows(data);
+                    html += "</tbody></table>";
+                    return html;
+                }
+
+                function generateTableRows(data) {
+                    var html = "";
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            html += "<tr>";
+                            html += "<td class='border border-gray-300 p-2 font-bold'>" + formatKey(key) + "</td>";
+
+                            if (Array.isArray(data[key])) {
+                                html += "<td class='border border-gray-300 p-2'><ul>";
+                                data[key].forEach(item => {
+                                    if (typeof item === 'object') {
+                                        html += "<li>" + generateTableHTML(item) + "</li>";
+                                    } else {
+                                        html += "<li>" + item + "</li>";
+                                    }
+                                });
+                                html += "</ul></td>";
+                            } else if (typeof data[key] === 'object') {
+                                html += "<td class='border border-gray-300 p-2'>" + generateTableHTML(data[key]) + "</td>";
+                            } else {
+                                html += "<td class='border border-gray-300 p-2'>" + data[key] + "</td>";
+                            }
+
+                            html += "</tr>";
+                        }
+                    }
+                    return html;
+                }
+
+                function formatKey(key) {
+                    return key.replace(/_/g, ' ').charAt(0).toUpperCase() + key.slice(1);
+                }
+
+                // Display data in the div
+                displayDictionaryValues({{ data | tojson }});
+            </script>
+            {% endif %}
+
+
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function updateFileName(input) {
+            const fileName = input.files[0]?.name || 'Choose an image...';
+            const label = input.nextElementSibling;
+            label.textContent = fileName;
+        }
+    </script>
+</body>
+
+</html>

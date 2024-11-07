@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search & Generate</title>
+    <!-- External CSS Files -->
+    <link rel="stylesheet" href="../static/style/styles.css"> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../static/style/style_gen.css"> <!-- Main content CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../static/style/boostrap.css">
+    <!-- Custom Embedded CSS -->
+    <style>
+        /* Form Section */
+        .form-section {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section h2 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #343a40;
+        }
+
+        /* Image Previews */
+        /* Image Previews */
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allow items to wrap */
+            justify-content: center;
+            /* Center align items */
+            margin-top: 10px;
+            /* Space above previews */
+        }
+
+        .preview-item {
+            display: inline-block;
+            margin: 10px;
+            position: relative;
+            max-width: 120px;
+
+        }
+
+        .preview-image {
+            max-width: 100%;
+            /* Ensure the image scales with the container */
+            height: auto;
+            /* Maintain aspect ratio */
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .remove-image {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            /* Center the X icon */
+            justify-content: center;
+            align-items: center;
+        }
+
+
+        /* Media Query for smaller screens */
+        @media (max-width: 600px) {
+            .preview-item {
+                max-width: 80px;
+                /* Smaller max width for smaller screens */
+            }
+
+            .remove-image {
+                width: 18px;
+                /* Adjust button size */
+                height: 18px;
+                font-size: 14px;
+                /* Smaller font size */
+            }
+        }
+        .mb-6-custom {
+            margin-bottom: 6px;
+        }
+    
+        .large-checkbox {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px; /* Space between checkbox and label */
+        }
+    
+        .form-label2 {
+            font-size: 16px;
+            color: #555;
+        }
+        .button-container {
+            margin-top: 15px;
+
+            /* Adds space above the button */
+        }
+
+        .btn {
+            background-color: #10aed6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Sidebar -->
+    <div class="navigation">
+        <ul>
+            <li class="header-title">
+                ALGORISYS TECHNOLOGIES
+            </li>
+            {% if 'Dashboard' in features %}
+            <li>
+                <a href="/">
+                    <span class="icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Search' in features %}
+            <li>
+                <a href="/search">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="title">Image Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Generate' in features %}
+            <li>
+                <a href="/generate">
+                    <span class="icon"><i class="fa-solid fa-image"></i></span>
+                    <span class="title">Image Generate</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume Search' in features %}
+            <li>
+                <a href="/Research">
+                    <span class="icon"><i class="fas fa-file-alt"></i></span>
+                    <span class="title">Resume Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume summary' in features %}
+            <li>
+                <a href="/resume">
+                    <span class="icon"><i class="fa-solid fa-file-alt"></i></span>
+                    <span class="title">Resume summary</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Train Similar Image' in features %}
+            <li>
+                <a href="/train_similar">
+                    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+                    <span class="title">Train Similar Model</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Card Extractor' in features %}
+            <li>
+                <a href="/card">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Card Extractor</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Image To Sketch' in features %}
+            <li>
+                <a href="/sketch">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Image To Sketch</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="toggle" onclick="toggleMenu()"></div>
+    <script type="text/javascript">
+        function toggleMenu() {
+            let navigation = document.querySelector('.navigation');
+            let toggle = document.querySelector('.toggle');
+            navigation.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+    </script>
+
+
+   <!-- Main Content Area -->
+   <div class="main-container">
+    {% if message1 %}
+    <h1 class="welcome-heading">{{ message1 }}</h1>
+    {% else %}
+    <div class="form-section">
+        <h2 style="color:black">Bulk Image Upload</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div>
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+
+
+        <div class="container mt-5">
+            <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                <!-- Folder Name Input -->
+                <div class="mb-3">
+                    <label for="folderName" class="form-label">Folder Name</label>
+                    <input type="text" class="form-control" id="folderName" name="folder_name"
+                        placeholder="Enter folder name" required>
+                </div>
+                <!-- Image File Input -->
+                <div class="mb-3">
+                    <label for="images" class="form-label">Upload Images</label>
+                    <input type="file" class="form-control" id="images" name="images[]" accept="image/*" multiple
+                        required>
+                </div>
+                <!-- Upload Button -->
+                <button type="submit" class="btn">Upload</button>
+
+                <!-- Image Previews -->
+                <div class="mb-3 mt-5" id="previewContainer">
+                    <!-- Image previews will appear here -->
+                </div>
+            </form>
+        </div>
+
+    </div>
+    {% endif %}
+</div>
+
+ <!-- SweetAlert2 JS -->
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <script src="../static/js/jquery-3.3.1.js"></script>
+ <script>
+     const form = document.getElementById('uploadForm');
+     const previewContainer = document.getElementById('previewContainer');
+     const imagesInput = document.getElementById('images');
+
+     imagesInput.addEventListener('change', function () {
+         previewContainer.innerHTML = '';
+         const files = Array.from(imagesInput.files);
+
+         files.forEach((file, index) => {
+             if (file.type.startsWith('image/')) {
+                 const reader = new FileReader();
+                 reader.onload = function (e) {
+                     const previewItem = document.createElement('div');
+                     previewItem.classList.add('preview-item');
+
+                     const img = document.createElement('img');
+                     img.src = e.target.result;
+                     img.classList.add('preview-image');
+
+                     const removeButton = document.createElement('button');
+                     removeButton.innerHTML = 'X';
+                     removeButton.classList.add('remove-image');
+                     removeButton.onclick = function () {
+                         previewContainer.removeChild(previewItem);
+                         const dataTransfer = new DataTransfer();
+                         const updatedFiles = Array.from(imagesInput.files);
+                         updatedFiles.splice(index, 1);
+                         updatedFiles.forEach(file => dataTransfer.items.add(file));
+                         imagesInput.files = dataTransfer.files;
+                     };
+
+                     previewItem.appendChild(img);
+                     previewItem.appendChild(removeButton);
+                     previewContainer.appendChild(previewItem);
+                 };
+                 reader.readAsDataURL(file);
+             }
+         });
+     });
+
+     form.addEventListener('submit', async function (event) {
+         event.preventDefault();
+         const formData = new FormData(form);
+
+         try {
+             const response = await fetch('/upload', {
+                 method: 'POST',
+                 body: formData,
+             });
+
+             if (response.ok) {
+                 Swal.fire({
+                     title: 'Upload successful!',
+                     text: 'Do you want to train the model with this folder?',
+                     icon: 'success',
+                     showCancelButton: true,
+                     confirmButtonText: 'Train Model',
+                     cancelButtonText: 'Cancel'
+                 }).then((result) => {
+                     if (result.isConfirmed) {
+                         const folderName = formData.get('folder_name');
+                         const modelName = formData.get('modelName');
+                         if (folderName) {
+                             startModelTraining(folderName, modelName);
+                         } else {
+                             Swal.fire('Error', 'Folder name is missing.', 'error');
+                         }
+                     }
+                 });
+             } else {
+                 const errorMessage = await response.text();
+                 Swal.fire('Error', errorMessage || 'Failed to upload images.', 'error');
+             }
+         } catch (error) {
+             Swal.fire('Error', 'An error occurred while uploading: ' + error.message, 'error');
+         }
+     });
+
+     async function startModelTraining(folderName, modelName) {
+         const progressHtml = '<div style="width: 100%; background-color: #f3f3f3;"><div id="progress-bar" class="progress-bar" style="width: 0%; height: 20px; background-color: #4caf50;"></div></div><div id="progress-text" style="margin-top: 10px;">Progress: 0%</div>';
+
+         const trainingAlert = Swal.fire({
+             title: 'Training Model...',
+             html: progressHtml,
+             allowOutsideClick: false,
+             showConfirmButton: false,
+             didOpen: () => {
+                 Swal.showLoading();
+                 checkTrainingStatus();
+             }
+         });
+
+         async function checkTrainingStatus() {
+             const interval = setInterval(async () => {
+                 try {
+                     const statusResponse = await fetch('/training_status');
+                     const statusData = await statusResponse.json();
+
+                     if (statusData.status === 'in-progress') {
+                         const progressBar = document.getElementById('progress-bar');
+                         const progressText = document.getElementById('progress-text');
+
+                         progressBar.style.width = `${statusData.progress}%`;
+                         progressText.innerText = `Progress: ${statusData.progress.toFixed(2)}%`;
+                     } else if (statusData.status === 'completed') {
+                         clearInterval(interval);
+                         Swal.fire('Success!', 'Model training completed.', 'success').then(() => {
+                             form.reset();
+                             previewContainer.innerHTML = '';
+                             document.getElementById('progress-bar').style.width = '0%';
+                             document.getElementById('progress-text').innerText = 'Progress: 0%';
+                         });
+                     }
+                 } catch (error) {
+                     clearInterval(interval);
+                     Swal.fire('Error', error.message, 'error');
+                 }
+             }, 1000);
+         }
+
+         try {
+             const response = await fetch('/train_model', {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                 },
+                 body: JSON.stringify({ folder_name: folderName, modelName: modelName }),
+             });
+
+             if (!response.ok) {
+                 Swal.fire('Error', 'Failed to start model training.', 'error');
+             }
+         } catch (error) {
+             Swal.fire('Error', error.message, 'error');
+         }
+     }
+ </script>
+
+
+
+</body>
+
+</html>

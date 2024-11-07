@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search & Generate</title>
+    <link rel="stylesheet" href="../static/style/styles.css"> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../static/style/style_ser.css"> <!-- Main content CSS -->
+    <link rel="stylesheet" href="../static/style/boostrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <style>
+        .upload-image {
+            display: flex;
+            justify-content: flex-start;
+            /* Align left */
+        }
+
+        .a2 {
+            text-decoration: none;
+            font-size: 18px;
+            color: blue;
+            /* Change text color to blue */
+            background-color: #f9f9f9;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-right: 550px;
+            /* Spacing between links */
+            display: flex;
+            /* Use flexbox to align icon and text */
+            align-items: center;
+            /* Center items vertically */
+        }
+
+        .a2 i {
+            margin-right: 8px;
+            /* Space between icon and text */
+        }
+
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 10px;
+            }
+
+            .a2 {
+                font-size: 16px;
+                /* Adjust font size */
+                padding: 8px 16px;
+                /* Adjust padding */
+            }
+        }
+
+        .slider-container {
+            margin-bottom: 25px;
+            /* Adds space between the slider and the button */
+            margin-top: 12px;
+            /* Adds space above the slider */
+        }
+
+        .button-container {
+            margin-top: 15px;
+
+            /* Adds space above the button */
+        }
+
+        .btn {
+            background-color: #10aed6;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navigation">
+        <ul>
+            <li class="header-title">
+                ALGORISYS TECHNOLOGIES
+            </li>
+            {% if 'Dashboard' in features %}
+            <li>
+                <a href="/">
+                    <span class="icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Search' in features %}
+            <li>
+                <a href="/search">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="title">Image Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Generate' in features %}
+            <li>
+                <a href="/generate">
+                    <span class="icon"><i class="fa-solid fa-image"></i></span>
+                    <span class="title">Image Generate</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume Search' in features %}
+            <li>
+                <a href="/Research">
+                    <span class="icon"><i class="fas fa-file-alt"></i></span>
+                    <span class="title">Resume Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume summary' in features %}
+            <li>
+                <a href="/resume">
+                    <span class="icon"><i class="fa-solid fa-file-alt"></i></span>
+                    <span class="title">Resume summary</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Train Similar Image' in features %}
+            <li>
+                <a href="/train_similar">
+                    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+                    <span class="title">Train Similar Model</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Card Extractor' in features %}
+            <li>
+                <a href="/card">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Card Extractor</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Image To Sketch' in features %}
+            <li>
+                <a href="/sketch">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Image To Sketch</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+
+    <!-- Main content area -->
+    <div class="main-container">
+        <h1 style="color:black">SIMILARITY SEARCH</h1>
+        <div class="upload-image">
+            <a href="/upload_images" class="a2">
+                <i class="fas fa-upload"></i> <!-- Font Awesome Upload Icon -->
+                >> Similar Search >>Uploads Bulk Image
+            </a>
+        </div>
+
+
+        {% if message %}
+        <h1 class="welcome-heading">{{ message }}</h1>
+        {% else %}
+        <div class="form-section">
+            <form method="POST" enctype="multipart/form-data" class="form" action="/search">
+                <label class="file-label">
+                    <input type="file" name="query_img" class="file-input" accept="image/*"
+                        onchange="updateFileName(this)" required>
+                    <span class="file-label-text">Choose an image...</span>
+                </label>
+
+
+
+                <label for="slider">Select number of images:</label>
+                <div class="slider-container">
+                    <input type="range" name="slider" id="slider" min="2" max="10" value="2" step="1"
+                        oninput="output.value = slider.value">
+                    <output id="output">2</output>
+                </div>
+
+                <div class="button-container">
+                    <input type="submit" value="Search" class="btn">
+                </div>
+            </form>
+
+            <!-- Image preview section -->
+            <div class="image-preview-container">
+                <img id="image-preview" src="" alt="Image Preview"
+                    style="display: none; max-width: 300px; margin-top: 30px;">
+            </div>
+            {% if query_path %}
+            <h2 class="mt-5">Query:</h2>
+            <img id="query-image" src="data:image/png;base64, {{ query_path }}" alt="Query Image" width="300px">
+            {% endif %}
+
+            {% if scores %}
+            <h2 class="mt-5">Showing Similar Images</h2>
+            <div class="image-grid">
+                {% for score in scores %}
+                <div class="image-item">
+                    <figure>
+                        <img src="{{ score[1] }}" alt="Similar Image">
+                        <figcaption>{{ score[0] }}</figcaption>
+                    </figure>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function updateFileName(input) {
+            const file = input.files[0];
+            const fileName = file?.name || 'Choose an image...';
+            const label = input.nextElementSibling;
+            label.textContent = fileName;
+
+            // Hide the previously stored query image if a new file is selected
+            const queryImage = document.getElementById('query-image');
+            if (queryImage) {
+                queryImage.style.display = 'none';
+            }
+
+            // Image preview logic for newly selected image
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const imagePreview = document.getElementById('image-preview');
+                    imagePreview.src = e.target.result; // Set the src to the file data
+                    imagePreview.style.display = 'block'; // Show the image preview
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        const slider = document.getElementById('slider');
+        const output = document.getElementById('output');
+        slider.oninput = function () {
+            output.value = this.value;
+        };
+    </script>
+
+</body>
+
+</html>

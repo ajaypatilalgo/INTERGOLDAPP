@@ -1,0 +1,90 @@
+/* General CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Main content area styling */
+.main-content {
+    margin-left: 250px; /* Space for sidebar */
+    padding: 40px; /* Space inside main content */
+    background-color: #f8f9fa; /* Light background */
+    min-height: 100vh; /* Full height */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    text-align: center; /* Center text */
+}
+
+/* Welcome heading styling */
+.welcome-heading {
+    font-size: 36px; /* Large font size */
+    color: #343a40; /* Dark color */
+    margin-bottom: 20px; /* Space below heading */
+}
+
+/* Description paragraph styling */
+.description {
+    font-size: 18px; /* Medium font size */
+    color: #6c757d; /* Grey color */
+    margin-bottom: 40px; /* Space below paragraph */
+}
+
+/* Navigation cards container styling */
+.navigation-cards {
+    display: flex;
+    gap: 30px; /* Space between cards */
+}
+
+/* Individual navigation card styling */
+.nav-card {
+    background-color: #ffffff; /* White background */
+    padding: 30px; /* Space inside card */
+    width: 300px; /* Fixed width for card */
+    height: 200px; /* Fixed height for card */
+    border: 1px solid #dee2e6; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+    cursor: pointer; /* Pointer cursor */
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transitions */
+    text-align: center; /* Center text */
+}
+
+/* Hover effect for navigation cards */
+.nav-card:hover {
+    transform: translateY(-5px); /* Lift card on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+/* Navigation card heading styling */
+.nav-card h2 {
+    font-size: 22px; /* Font size for heading */
+    color: #007bff; /* Blue color */
+    margin-bottom: 10px; /* Space below heading */
+}
+
+/* Navigation card paragraph styling */
+.nav-card p {
+    font-size: 16px; /* Font size for paragraph */
+    color: #6c757d; /* Grey color */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0; /* Remove sidebar offset */
+        padding: 20px; /* Reduced padding */
+    }
+
+    .navigation-cards {
+        flex-direction: column; /* Stack cards vertically */
+    }
+
+    .nav-card {
+        width: 100%; /* Full width for card */
+        max-width: 400px; /* Maximum width */
+    }
+}

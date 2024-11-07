@@ -1,0 +1,178 @@
+/* General CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Main container styling */
+.main-container {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    height: 100vh; /* Full height */
+    width: 80%; /* Increased width of main content area */
+    margin-left: 250px; /* Offset for the fixed sidebar */
+    padding: 20px; /* Padding for the main content */
+    background-color: #f8f9fa; /* Light background */
+    align-items: center; /* Center content horizontally */
+}
+
+/* Styling for h1 heading */
+h1 {
+    font-size: 36px; /* Larger font size */
+    color: #343a40; /* Dark color */
+    font-weight: 700; /* Bold font */
+    text-align: center; /* Center the text */
+    margin-bottom: 30px; /* Space below the heading */
+    padding-bottom: 10px; /* Padding below the heading */
+    border-bottom: 2px solid #007bff; /* Add a bottom border */
+    width: 100%; /* Full-width heading */
+    max-width: 800px; /* Limit the max width of the heading */
+}
+
+/* Form section styling */
+.form-section {
+    background-color: #ffffff; /* Form background */
+    padding: 30px; /* Padding inside the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    width: 100%; /* Full width for the form section */
+    max-width: 1000px; /* Maximum width for the form section */
+    height: auto; /* Auto height based on content */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    margin: auto; /* Center the form section */
+    align-items: center; /* Center elements horizontally */
+    text-align: center; /* Center text */
+}
+
+/* Styling for file input label */
+.file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 600px; /* Increased width */
+    height: 180px; /* Increased height */
+    border: 2px dashed #ced4da;
+    border-radius: 8px; /* Rounded corners */
+    background-color: #f8f9fa; /* Light background */
+    color: #6c757d; /* Grey text */
+    cursor: pointer;
+    margin-bottom: 20px; /* Space below the file label */
+    position: relative; /* Relative positioning */
+    transition: background-color 0.2s; /* Smooth transition */
+}
+
+.file-label:hover {
+    background-color: #e9ecef; /* Lighten on hover */
+}
+
+.file-label-text {
+    font-size: 18px; /* Text size */
+    margin-top: 10px; /* Space between image and text */
+}
+
+.file-input {
+    display: none; /* Hide default file input */
+}
+
+/* Button styling */
+.btn {
+    display: inline-block; /* Inline block for buttons */
+    padding: 10px 20px; /* Padding inside button */
+    background-color: #007bff; /* Button background */
+    color: #fff; /* Button text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size for button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Transition for hover effect */
+    text-align: center; /* Center the text */
+    width: 100%; /* Full-width button */
+    max-width: 200px; /* Limit maximum width */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Change background on hover */
+}
+
+/* H2 styling */
+h2 {
+    font-size: 22px; /* Font size for headings */
+    color: #343a40; /* Dark color for heading */
+    margin: 20px 0; /* Space above and below */
+}
+
+/* Image grid styling */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Increase card size */
+    gap: 20px; /* Gap between items */
+    padding: 20px; /* Padding around the grid */
+    width: 100%;
+    max-width: 1000px; /* Max width of the grid */
+    margin: 0 auto; /* Center the grid */
+}
+
+/* Image item styling */
+.image-item {
+    background-color: #ffffff; /* Background color */
+    padding: 20px; /* Increased padding around image */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    text-align: center; /* Center text and image */
+    transition: transform 0.2s; /* Smooth scaling */
+}
+
+.image-item:hover {
+    transform: scale(1.05); /* Scale up on hover */
+}
+
+.image-item img {
+    width: 100%;
+    border-radius: 8px; /* Rounded corners for image */
+    height: auto; /* Auto height */
+}
+
+figcaption {
+    font-size: 14px; /* Caption font size */
+    color: #6c757d; /* Caption text color */
+    margin-top: 10px; /* Space above caption */
+}
+.model-section{
+    text-align: start;
+    margin-bottom: 10px;
+    color: blue;
+}
+
+.search-button{
+    background: #007bff;
+    border-radius: 5px;
+    padding: 7px 40px;
+    border: none;
+    margin: 20px;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-container {
+        width: 100%; /* Full-width main container */
+        margin-left: 0; /* Remove sidebar offset */
+        padding: 10px; /* Reduced padding for smaller screens */
+    }
+
+    .form-section {
+        padding: 20px; /* Reduced padding for form section */
+    }
+
+    .file-label {
+        height: 140px; /* Smaller height for the file input */
+    }
+
+    .btn {
+        width: 100%; /* Full width button */
+    }
+}

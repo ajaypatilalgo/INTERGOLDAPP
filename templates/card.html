@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search & Generate</title>
+    <link rel="stylesheet" href="../static/style/styles.css"> <!-- Sidebar CSS -->
+    <link rel="stylesheet" href="../static/style/style_ser.css"> <!-- Main content CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    
+    <style>
+        .file-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+            padding: 0.5em;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        .file-label-text {
+            font-size: 16px;
+        }
+
+        #preview-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1em;
+            margin-bottom: 2em;
+        }
+
+        #preview {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            display: none;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.5em;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .extracted-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .extracted-data-table th,
+        .extracted-data-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .extracted-data-table th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .extracted-data-table td ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .extracted-data-table td ul li {
+            list-style-type: disc;
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+
+            .extracted-data-table th,
+            .extracted-data-table td {
+                padding: 8px;
+                font-size: 0.9em;
+            }
+        }
+
+        .mt-5 {
+            margin-top: 5px; /* Top margin of 5px */
+        }
+        
+        .mb-5 {
+            margin-bottom: 45px; /* Bottom margin of 5px */
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="navigation">
+        <ul>
+            <li class="header-title">
+                ALGORISYS TECHNOLOGIES
+            </li>
+            {% if 'Dashboard' in features %}
+            <li>
+                <a href="/">
+                    <span class="icon"><i class="fa-solid fa-house"></i></span>
+                    <span class="title">Dashboard</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Search' in features %}
+            <li>
+                <a href="/search">
+                    <span class="icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <span class="title">Image Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Image Generate' in features %}
+            <li>
+                <a href="/generate">
+                    <span class="icon"><i class="fa-solid fa-image"></i></span>
+                    <span class="title">Image Generate</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume Search' in features %}
+            <li>
+                <a href="/Research">
+                    <span class="icon"><i class="fas fa-file-alt"></i></span>
+                    <span class="title">Resume Search</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% if 'Resume summary' in features %}
+            <li>
+                <a href="/resume">
+                    <span class="icon"><i class="fa-solid fa-file-alt"></i></span>
+                    <span class="title">Resume summary</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Train Similar Image' in features %}
+            <li>
+                <a href="/train_similar">
+                    <span class="icon"><i class="fa-solid fa-robot"></i></span>
+                    <span class="title">Train Similar Model</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Card Extractor' in features %}
+            <li>
+                <a href="/card">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Card Extractor</span>
+                </a>
+            </li>
+            {% endif %}
+            {% if 'Image To Sketch' in features %}
+            <li>
+                <a href="/sketch">
+                    <span class="icon"><i class="fa-solid fa-id-card"></i></span>
+                    <span class="title">Image To Sketch</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <!-- Main content area -->
+    <div class="main-container">
+        <h1 style="color:black">VISITING CARD EXTRACTION</h1>
+        {% if message1 %}
+        <h1 class="welcome-heading">{{ message1 }}</h1>
+        {% else %}
+        <div class="form-section">
+            <form method="POST" enctype="multipart/form-data" class="form" action="{{ url_for('upload_card') }}">
+                <label class="file-label">
+                    <input type="file" name="query_image" class="file-input" accept="image/*"
+                        onchange="updateFileName(this)" required>
+                    <span class="file-label-text">Choose a Visiting Card...</span>
+                </label>
+                <div id="preview-container">
+                    <img id="preview" alt="Image Preview">
+                </div>
+                <input type="submit" value="Upload" class="btn">
+            </form>
+        </div>
+
+        {% if website or email or pincode or phone_numbers or address or card_details %}
+        <div class="form-section mt-5 mb-5"> <!-- Added mb-5 class for bottom margin -->
+            <h2>Extracted Data from Visiting Card</h2>
+            <table class="extracted-data-table">
+                <tr>
+                    <th>Data Type</th>
+                    <th>Extracted Information</th>
+                </tr>
+                <tr>
+                    <td><strong>Card Holder Name</strong></td>
+                    <td>{{ card_holder }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Website URL</strong></td>
+                    <td>{{ website }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Email</strong></td>
+                    <td>{{ email }}</td>
+                </tr>
+                <tr>
+                    <td><strong>PIN Code</strong></td>
+                    <td>{{ pincode }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Phone Number(s)</strong></td>
+                    <td>{{ phone_numbers }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Address</strong></td>
+                    <td>{{ address }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Company Details</strong></td>
+                    <td>
+                        <ul>
+                            {% for detail in other_details %}
+                            <li>{{ detail }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        {% endif %}
+
+
+        {% endif %}
+    </div>
+
+    <script>
+        function updateFileName(input) {
+            const fileLabelText = document.querySelector(".file-label-text");
+            const preview = document.getElementById("preview");
+    
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                fileLabelText.textContent = file.name;
+    
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block'; // Show the preview
+                };
+                reader.readAsDataURL(file);
+            } else {
+                fileLabelText.textContent = "Choose a Visiting Card...";
+                preview.style.display = 'none'; // Hide the preview if no file is selected
+            }
+        }
+    
+        function showUploadedImage() {
+            const preview = document.getElementById("preview");
+            preview.style.display = 'block'; // Ensure the preview is displayed after form submission
+        }
+    </script>
+    
+</body>
+
+</html>
