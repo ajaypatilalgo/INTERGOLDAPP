@@ -22,7 +22,6 @@ from pathlib import Path
 from threading import Thread
 from sklearn.metrics.pairwise import cosine_similarity
 from PIL import Image
-from extractorcard import extract_data_from_image
 from VGG19 import FeatureExtractor_VGG19  # Importing feature extraction class
 
 # Load environment variables from a .env file
@@ -466,6 +465,8 @@ def model_training_task(folder_name):
     training_status['status'] = 'completed'
     training_status['progress'] = 100
     print(f"Training completed on folder: {folder_name}")
+    global features
+    global img_paths
 
 @app.route('/train_model', methods=['POST'])
 def train_model():
@@ -488,52 +489,7 @@ def training_status_endpoint():
 # ========================================================================================================
                                 #Visiting card extraction
 # ========================================================================================================
-@app.route('/card', methods=['GET', 'POST'])
-def card():
-    features = get_features()
-    
-    if not features:
-        message1 = "No features are available to be used"
-    else:
-        message1 = None
 
-    return render_template('card.html',features=features,message1=message1)
-
-@app.route('/upload_card', methods=['POST'])
-def upload_card():
-    features = get_features()
-    if request.method == 'POST':
-        if 'query_image' not in request.files:
-            return redirect(request.url)
-        
-        file = request.files['query_image']
-        if file.filename == '':
-            return redirect(request.url)
-
-        if file:
-            # Open and process image
-            input_image = Image.open(file)
-            
-            # Call the extractor function to get the data
-            extracted_data = extract_data_from_image(input_image)
-            
-            # Pass results to the result page
-            return render_template(
-                'card.html',
-                features=features,
-                image=file.filename,
-                website=extracted_data['website'],
-                email=extracted_data['email'],
-                pincode=extracted_data['pincode'],
-                phone_numbers=extracted_data['phone_numbers'],
-                address=extracted_data['address'],
-                # card_details=extracted_data['card_details']
-                card_holder=extracted_data['card_holder'],
-                company_name=extracted_data['company_name'],
-                other_details=extracted_data['other_details']
-            )
-            
-            
 
 #=============================================================================================================
                                 # Image to Sketch
