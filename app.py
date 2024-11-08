@@ -465,8 +465,6 @@ def model_training_task(folder_name):
     training_status['status'] = 'completed'
     training_status['progress'] = 100
     print(f"Training completed on folder: {folder_name}")
-    global features
-    global img_paths
 
 @app.route('/train_model', methods=['POST'])
 def train_model():
