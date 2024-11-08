@@ -4,9 +4,7 @@ tensorflow
 flask
 openai==0.28
 python-dotenv
-tensorflow-cpu
-easyocr==1.7.0
-python-Levenshtein==0.21.0
+tensorflow==2.17.0
 python-dotenv
 PyMuPDF
 fuzzywuzzy
